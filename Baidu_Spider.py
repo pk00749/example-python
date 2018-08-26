@@ -8,7 +8,7 @@ import os
 
 
 url_1 = r'http://image.baidu.com/search/flip?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=-1&st=-1&fm=result&fr=&sf=1&fmq=1472289365626_R&pv=&ic=0&nc=1&z=&se=1&showtab=0&fb=0&width=&height=&face=0&istype=2&ie=utf-8&ctd=1472289365627%5E00_1423X775&word='
-keyWords = raw_input(r"输入关键字:")
+keyWords = input(r"输入关键字:")
 
 url = url_1+urllib.quote(keyWords)
 
@@ -39,12 +39,12 @@ for url in urls:
             f.write(data)
             index += 1
 
-    except urllib2.URLError, error:  # The parent of HTTPError is URLError
+    except urllib2.URLError as error:  # The parent of HTTPError is URLError
         if hasattr(error, "code"):
-            print error.code
+            print(error.code)
         if hasattr(error, "reason"):
-            print error.reason
+            print(error.reason)
     else:
-        print "Success"
+        print("Success")
 
 print("Done,total %s" % index)
