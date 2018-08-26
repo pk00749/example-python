@@ -27,4 +27,29 @@ def operator_priority(formula):
 
     return result_set
 
-print(operator_priority('A+B'))
+def calculate(converted_result):
+    calculating_list = Stack()
+
+    for element in converted_result:
+        if element not in '+-*/':
+            calculating_list.push(int(element))
+        else:
+            a = calculating_list.pop()
+            b = calculating_list.pop()
+            result = do_math(element, a, b)
+            calculating_list.push(result)
+    return calculating_list.pop()
+
+def do_math(operator, a, b):
+    if operator == '+':
+        return a+b
+    elif operator == '-':
+        return a-b
+    elif operator == '*':
+        return a*b
+    elif operator == '/':
+        return a / b
+
+
+# print(operator_priority('A+B'))
+print(calculate(operator_priority('1+3')))
