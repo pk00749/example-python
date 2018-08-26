@@ -1,0 +1,3 @@
+recursive-include pythonbrew/patches *
+recursive-include pythonbrew/etc *
+include pythonbrew_install.py

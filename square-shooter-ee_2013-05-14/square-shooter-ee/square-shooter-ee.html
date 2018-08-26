@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Square Shooter Enhanced Edition</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1">
+  <script type="text/javascript" src="square-shooter-ee.js"></script>
+  <script type="text/javascript">
+	window.addEventListener("load", function () {
+		var game = SquareShooter();
+		
+		var play_button = document.getElementById("play-button");
+		var quit_button = document.getElementById("quit-button");
+		var help_button = document.getElementById("help-button");
+		var mute_button = document.getElementById("mute-button");
+
+		var credits_pane = document.getElementById("credits-pane");
+		var close_credits = document.getElementById("close-credits");
+		
+		play_button.addEventListener("click", function (event) {
+			if (game.model.level == 0) {
+				game.start();
+			} else if (game.renderer.game_paused) {
+				game.resume();
+			} else {
+				game.renderer.game_paused = true;
+			}
+			event.stopPropagation();
+		}, false);
+		
+		quit_button.addEventListener("click", function (event) {
+			if (game.model.level == 0) {
+				window.close();
+			} else {
+				game.model.level = 0;
+				game.renderer.render();
+			}
+			event.stopPropagation();
+		}, false);
+		
+		help_button.addEventListener("click", function (event) {
+			if (game.model.level > 0)
+				game.renderer.game_paused = true;
+			credits_pane.style.display = "block";
+			event.stopPropagation();
+		}, false);
+
+		mute_button.addEventListener("click", function (event) {
+			game.muted = !game.muted;
+			event.stopPropagation();
+		}, false);
+		
+		close_credits.addEventListener("click", function (event) {
+			credits_pane.style.display = "none";
+			event.preventDefault();
+			event.stopPropagation();
+		}, false);
+	}, false);
+  </script>
+  <style type="text/css">
+	button {
+		Position: fixed;
+		Z-index: 10;
+		Width: 3em;
+		Height: 3em;
+		Color: #00ff00;
+		Background-color: black;
+		Border-color: #00ff00;
+	}
+	#play-button { Bottom: 5em; Right: 5em; }
+	#help-button { Bottom: 1em; Right: 5em; }
+	#mute-button { Bottom: 5em; Right: 1em; }
+	#quit-button { Bottom: 1em; Right: 1em; }
+	
+	#credits-pane {
+		Position: absolute;
+		Top: 0;
+		Left: 0;
+		Width: 100%;
+		Height: 100%;
+		Overflow: auto;
+		Background-color: rgba(0, 0, 0, 0.8);
+		Color: #ccffcc;
+		Font-family: sans-serif;
+		Z-index: 20;
+		Display: none;
+	}
+	.padding { Padding: 1em; }
+	h1 { Font-size: 1.5em; }
+	h2 { Font-size: 1.3em; }
+	a { Color: #ccccff; }
+	#close-credits {
+		Color: #ccccff;
+		Display: block;
+		Padding: 1em;
+	}
+  </style>
+ </head>
+ 
+ <body>
+  <button id="play-button" title="Play/Pause"><big><b>P</b></big></button>
+  <button id="help-button" title="Help"><big><b>H</b></big></button>
+  <button id="mute-button" title="Mute on/off"><big><b>M</b></big></button>
+  <button id="quit-button" title="Quit"><big><b>Q</b></big></button>
+  
+  <div id="credits-pane"><div class="padding">
+   <h1>Square Shooter Enhanced Edition</h1>
+   <p>An abstract shooter in HTML5 by
+   <a href="http://notimetoplay.org/">No Time To Play</a>.</p>
+   
+   <h2>How to play</h2>
+   <p>Click/tap the big bubbles to shoot them; hold down the mouse/finger
+   to move towards that spot. Collect the powerups and don't get hit. :P</p>
+   
+   <h2>Credits</h2>
+   <p>Laser and powerup sound FX by
+   <a href="http://www.kenney.nl">Kenney Vleugels</a>.
+   Ship launch sound by
+   <a href="http://opengameart.org/users/ogrebane">ogrebane</a>.
+   Ship explosions by <a href="http://apollo-music.de/">Michel Baradari</a>.
+   3 Explosion Bangs Copyright 2012 <a href="http://qubodup.net/">Iwan 'qubodup' Gabovitch</a>.</p>
+   <p>Most sounds are used under a
+   <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution license</a>. Launch sound by ogrebane is public domain.</p>
+   <hr>
+   <a href="#" id="close-credits">Return to game</a>
+  </div></div>
+ </body>
+</html>
