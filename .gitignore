@@ -22,3 +22,5 @@ $RECYCLE.BIN/
 # =========================
 # Operating System Files
 # =========================
+.idea/workspace.xml
+.idea/misc.xml
