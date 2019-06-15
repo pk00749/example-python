@@ -70,7 +70,7 @@ class Vector2D:
 class Bubble2D:
 	def __init__(self, radius):
 		self.position = Vector2D(0, 0)
-		self.radius = radius;
+		self.radius = radius
 		self.speed = Vector2D(0, 0)
 	
 	def update(self, delta_t):
@@ -85,7 +85,7 @@ class Bubble2D:
 		if pos.y > 1: pos.y = 0
 
 	def is_out(self):
-		pos = self.position;
+		pos = self.position
 		return pos.x < 0 or pos.y < 0 or pos.x > 1 or pos.y > 1
 	
 	def collides_with(self, bubble):
@@ -94,8 +94,9 @@ class Bubble2D:
 		distance = math.sqrt(a * a + b * b)
 		return distance < (self.radius + bubble.radius)
 
+
 def random_position():
-	return (random.random() - 0.5) * 3 + 0.5;
+	return (random.random() - 0.5) * 3 + 0.5
 
 def random_speed(magnitude):
 	return (random.random() * magnitude * 2 - magnitude)
@@ -149,19 +150,19 @@ class GameWorld:
 	def init_level(self, level):
 		self.level = level
 		if (level > self.max_level): self.max_level = level
-		if self.ship == None:
+		if self.ship is None:
 			self.ship = Bubble2D(1.0 / 25)
-			if not muted: launch_sound.play();
+			if not muted: launch_sound.play()
 		self.ship.position = Vector2D(0.5, 0.5)
 		self.ship.speed = Vector2D(0, 0)
-		self.bullet = None;
+		self.bullet = None
 		self.move_timer = 0
 		self.death_timer = 0
 		self.finish_timer = 0
 		
-		self.ship_shield_timer = 6;
-		self.bullet_shield_timer = 0;
-		self.freeze_timer = 0;
+		self.ship_shield_timer = 6
+		self.bullet_shield_timer = 0
+		self.freeze_timer = 0
 		
 		del self.bubbles[:]
 		del self.explosions[:]
@@ -192,7 +193,7 @@ class GameWorld:
 		
 		if len(self.bubbles) == 0:
 			if self.finish_timer > 0:
-				self.finish_timer -= delta_t;
+				self.finish_timer -= delta_t
 			else:
 				self.level += 1
 				self.lives += 1
@@ -203,20 +204,20 @@ class GameWorld:
 				i.update(delta_t)
 				i.wrap_around()
 
-		if self.bullet != None:
+		if self.bullet is not None:
 			self.bullet.update(delta_t)
 			if self.bullet.is_out():
 				self.bullet = None
 
-		if self.ship == None:
+		if self.ship is None:
 			if self.death_timer > 0:
 				self.death_timer -= delta_t
 			elif self.lives > 0:
 				self.ship = Bubble2D(1.0 / 25)
 				self.ship.position = Vector2D(0.5, 0.5)
-				self.ship_shield_timer = 6;
+				self.ship_shield_timer = 6
 				
-				if not muted: launch_sound.play();
+				if not muted: launch_sound.play()
 			else:
 				self.level = 0 # Game over
 			return
@@ -230,7 +231,7 @@ class GameWorld:
 		
 	def handle_collisions(self, delta_t):
 		for b in self.bubbles:
-			if self.bullet != None and b.collides_with(self.bullet):
+			if self.bullet is not None and b.collides_with(self.bullet):
 				self.bubbles.remove(b)
 				if self.bullet_shield_timer <= 0:
 					self.bullet = None
@@ -244,7 +245,7 @@ class GameWorld:
 				if len(self.bubbles) == 0:
 					self.finish_timer = 3
 				break
-			elif self.ship != None:
+			elif self.ship is not None:
 				if not b.collides_with(self.ship):
 					continue
 				if self.ship_shield_timer > 0:
@@ -252,7 +253,7 @@ class GameWorld:
 				self.spawn_explosion(self.ship)
 				self.ship = None
 				self.lives -= 1
-				self.death_timer = 3;
+				self.death_timer = 3
 				if self.lives > 0:
 					if not muted: death_sound.play()
 				else:
@@ -315,7 +316,7 @@ class GameWorld:
 		elif powerup.kind == "freeze":
 			self.freeze_timer += 6
 		else:
-			raise "Bad powerup type"
+			raise ("Bad powerup type")
 		self.score += self.level * 10
 
 		if self.score > self.high_score:
@@ -327,11 +328,11 @@ class GameWorld:
 		if self.bullet != None or self.ship == None:
 			return
 
-		x -= self.ship.position.x;
-		y -= self.ship.position.y;
+		x -= self.ship.position.x
+		y -= self.ship.position.y
 
 		b = Bubble2D(0.01)
-		b.position.copy(self.ship.position);
+		b.position.copy(self.ship.position)
 		b.speed.x = x * 3
 		b.speed.y = y * 3
 		
@@ -346,7 +347,7 @@ class GameWorld:
 			
 		self.bullet = b
 		
-		if not muted: random.choice(laser_sounds).play();
+		if not muted: random.choice(laser_sounds).play()
 
 	def shoot_by(self, x, y):
 		if self.bullet != None or self.ship == None:
@@ -367,11 +368,11 @@ class GameWorld:
 		if self.ship == None:
 			return
 
-		x -= self.ship.position.x;
-		y -= self.ship.position.y;
+		x -= self.ship.position.x
+		y -= self.ship.position.y
 		
-		self.accel_x += x * 0.03;
-		self.accel_y += y * 0.03;
+		self.accel_x += x * 0.03
+		self.accel_y += y * 0.03
 		
 	def thrust_by(self, x, y):
 		if self.ship == None:
@@ -394,9 +395,9 @@ class GameScreen:
 
 		font_name = pygame.font.get_default_font()
 		self.hud_font =	pygame.font.SysFont(
-			font_name, self.height / 10)
+			font_name, int(self.height / 10))
 		self.msg_font = pygame.font.SysFont(
-			font_name, self.height / 20)
+			font_name, int(self.height / 20))
 		
 		self.bubble_colors = ["#ffffcc", "#ffccff", "#ccffff",
 			"#ffdddd", "#ddffdd", "#ddddff"]
@@ -451,21 +452,21 @@ class GameScreen:
 			
 	def render_title_screen(self):
 		text = self.hud_font.render("SQUARE", False, GREEN)
-		self.screen.blit(text, text.get_rect(midbottom = (240, 240)))
+		self.screen.blit(text, text.get_rect(midbottom=(240, 240)))
 		text = self.hud_font.render("SHOOTER", False, GREEN)
-		self.screen.blit(text, text.get_rect(midtop = (240, 240)))
+		self.screen.blit(text, text.get_rect(midtop=(240, 240)))
 		
 		text = self.msg_font.render("No Time To Play", False, GREEN)
-		self.screen.blit(text, text.get_rect(midbottom = (240, 120)))
+		self.screen.blit(text, text.get_rect(midbottom=(240, 120)))
 		text = self.msg_font.render("presents", False, GREEN)
-		self.screen.blit(text, text.get_rect(midtop = (240, 120)))
+		self.screen.blit(text, text.get_rect(midtop=(240, 120)))
 		
 		high_score = "High score: " + str(self.model.high_score)
 		text = self.msg_font.render(high_score, False, GREEN)
-		self.screen.blit(text, text.get_rect(midbottom = (240, 360)))
+		self.screen.blit(text, text.get_rect(midbottom=(240, 360)))
 		max_level = "Max level: " + str(self.model.max_level)
 		text = self.msg_font.render(max_level, False, GREEN)
-		self.screen.blit(text, text.get_rect(midtop = (240, 360)))
+		self.screen.blit(text, text.get_rect(midtop=(240, 360)))
 		
 	def render_game_world(self):
 		m = self.model
@@ -661,7 +662,7 @@ while running:
 			shoot_y = joystick.get_axis(3)
 			model.shoot_by(shoot_x, shoot_y)
 	elif ev.type == pygame.JOYBUTTONDOWN:
-		 # By now we know there's at least one button.
+		# By now we know there's at least one button.
 		if joystick.get_button(0):
 			if model.level == 0:
 				model.score = 0
