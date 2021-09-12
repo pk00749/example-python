@@ -1,4 +1,30 @@
-# -*- coding:utf-8 -*-
+#-----------init----------
+engine = create_engine()
+
+metadata = MetaData(engine)
+
+tpam_cpai_account_data = Table('tpam_cpai_account_data', metadata,
+                            Column('id', Integer, primary_key=True, autoincrement=True),
+                            Column('', String(50)),
+                            )
+
+metadata.create_all()
+
+tpam_cpai_account_data =  Table('tpam_cpai_account_data', metadata, autoload=True)
+
+
+#-------------------------
+has_table = db.engine.dialect.has_table(db.engine.connect(), 'tpam_cpai_account_data')
+if not has_table:
+    tpam_cpai_account_data = Table('tpam_cpai_account_data', metadata,
+                            Column('', Integer, primary_key=True),
+                            Column('', String(50)),
+                            )
+    metadata.create_all()
+else:
+    tpam_cpai_account_data =  Table('tpam_cpai_account_data', metadata, autoload=True)
+
+#----------------------
 import numpy
 import pandas as pd
 #
